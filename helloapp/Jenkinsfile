@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    // should specify tool name as it is assigned in Jenkins tools
+    tools {
+          maven "Maven 3.8.3"
+    }
+    parameters {
+        booleanParam(name: 'isReleaseBuild', defaultValue: false, description: 'This build should close current SNAPSHOT version and release stable version')
+    }    
+    stages {
+        stage('build') {
+            steps {
+                configFileProvider([configFile(fileId: 'mvn_settings.xml', variable: 'SETTINGS_FILE')]) {
+                    withCredentials([usernamePassword(credentialsId: 'tools-tests', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh 'mvn -gs ${SETTINGS_FILE} clean install -Pintegration-test'
+                    }
+                }
+            }
+        }
+        stage('build-app') {
+            steps {
+                configFileProvider([configFile(fileId: 'mvn_settings.xml', variable: 'SETTINGS_FILE')]) {
+                    withCredentials([usernamePassword(credentialsId: 'tools-tests', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh 'mvn -gs ${SETTINGS_FILE} clean install -Papp'
+                    }
+                }
+            }
+        }        
+        stage("deploy") {
+            steps {
+                configFileProvider([configFile(fileId: 'mvn_settings.xml', variable: 'SETTINGS_FILE')]) {
+                    sshagent(credentials: ['deploySshKey']) {
+                        script {
+                            def args = params.isReleaseBuild? 'release:prepare release:perform -B': 'deploy'
+                            sh 'mvn -gs ${SETTINGS_FILE} ' + args
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
