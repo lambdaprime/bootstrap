@@ -4,7 +4,6 @@
 **/.settings/
 **/src/gen/
 **/target
-docs/
 **/.classpath
 **/.project
 **/dependency-reduced-pom.xml
