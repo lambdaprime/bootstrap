@@ -2,12 +2,15 @@ package id.bootstrap.rtpstalk;
 
 import java.util.concurrent.SubmissionPublisher;
 import pinorobotics.rtpstalk.RtpsTalkClient;
+import pinorobotics.rtpstalk.RtpsTalkConfiguration;
 import pinorobotics.rtpstalk.messages.RtpsTalkDataMessage;
 
 public class PublisherApp {
 
     public static void main(String[] args) throws Exception {
-        try (var client = new RtpsTalkClient()) {
+        try (var client = new RtpsTalkClient(new RtpsTalkConfiguration.Builder()
+                .networkInterface("lo") // name of network interface where to run participant discovery
+                .build())) {
             var topicName = "HelloWorldTopic";
             var topicType = "HelloWorld";
             var publisher = new SubmissionPublisher<RtpsTalkDataMessage>();

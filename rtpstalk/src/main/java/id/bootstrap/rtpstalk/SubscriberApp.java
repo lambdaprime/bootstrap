@@ -4,12 +4,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import pinorobotics.rtpstalk.RtpsTalkClient;
+import pinorobotics.rtpstalk.RtpsTalkConfiguration;
 import pinorobotics.rtpstalk.messages.RtpsTalkDataMessage;
 
 public class SubscriberApp {
 
     public static void main(String[] args) throws Exception {
-        try (var client = new RtpsTalkClient()) {
+        try (var client = new RtpsTalkClient(new RtpsTalkConfiguration.Builder()
+                .networkInterface("lo") // name of network interface where to run participant discovery
+                .build())) {
             var topicName = "HelloWorldTopic";
             var topicType = "HelloWorld";
             var future = new CompletableFuture<Void>();
