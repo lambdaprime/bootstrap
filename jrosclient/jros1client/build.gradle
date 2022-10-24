@@ -16,9 +16,6 @@ targetCompatibility = '11'
 
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    manifest {
-        attributes "Main-Class": "id.bootstrap.jrosclient.SubscriberApp"
-    }
 
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

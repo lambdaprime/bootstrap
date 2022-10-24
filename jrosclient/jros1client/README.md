@@ -25,13 +25,13 @@ rostopic pub -r 10 helloRos std_msgs/String "hello there"
 Run application Maven build:
 
 ``` bash
-java -jar target/bootstrap-1.0-SNAPSHOT.jar 
+java -cp target/bootstrap-1.0-SNAPSHOT.jar id.bootstrap.jrosclient.SubscriberApp
 ```
 
 Run application Gradle build:
 
 ``` bash
-java -jar build/libs/jros1client.jar 
+java -cp build/libs/jros1client.jar id.bootstrap.jrosclient.SubscriberApp
 ```
 
 # Contributors
