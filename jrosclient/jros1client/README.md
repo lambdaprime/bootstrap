@@ -31,7 +31,7 @@ java -jar target/bootstrap-1.0-SNAPSHOT.jar
 Run application Gradle build:
 
 ``` bash
-java -jar build/libs/jrosclient.jar
+java -jar build/libs/jros1client.jar 
 ```
 
 # Contributors

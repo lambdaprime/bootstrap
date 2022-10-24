@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.lambdaprime:jrosclient:4.0'
+    implementation 'io.github.lambdaprime:jros1client:5.0'
 }
 
 sourceCompatibility = '11'

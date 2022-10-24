@@ -4,20 +4,19 @@
   <groupId>id.bootstrap.jrosclient</groupId>
   <artifactId>bootstrap</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>ROS in Java with jrosclient</name>
+  <name>ROS1 in Java with jros1client</name>
   <packaging>jar</packaging>
 
   <properties>
     <mainClass>id.bootstrap.jrosclient.SubscriberApp</mainClass>
     <jdk.version>11</jdk.version>
-    <jrosclient.version>4.0</jrosclient.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.github.lambdaprime</groupId>
-      <artifactId>jrosclient</artifactId>
-      <version>${jrosclient.version}</version>
+      <artifactId>jros1client</artifactId>
+      <version>5.0</version>
     </dependency>
   </dependencies>
 
