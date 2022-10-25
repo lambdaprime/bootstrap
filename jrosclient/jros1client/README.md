@@ -1,4 +1,4 @@
-Bootstrap project for [jrosclient](https://github.com/lambdaprime/jrosclient)
+Bootstrap project for [jros1client](https://github.com/lambdaprime/jros1client)
 
 # Build
 
