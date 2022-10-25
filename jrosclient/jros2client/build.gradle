@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.lambdaprime:jros2client:1.0'
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
