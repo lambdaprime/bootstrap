@@ -10,7 +10,6 @@ import id.jrosmessages.std_msgs.StringMessage;
 public class PublisherApp {
 
     public static void main(String[] args) throws Exception {
-        // specify URL of the master node
         var client = new JRos2ClientFactory().createClient();
         String topicName = "/helloRos";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);

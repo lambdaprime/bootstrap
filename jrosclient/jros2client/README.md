@@ -25,13 +25,13 @@ ros2 topic pub -r 10 helloRos std_msgs/String 'data: "hello there"'
 Run application Maven build:
 
 ``` bash
-java -cp target/bootstrap-1.0-SNAPSHOT.jar id.bootstrap.jrosclient.SubscriberApp
+java -cp target/jros2client-1.0-SNAPSHOT.jar id.bootstrap.jrosclient.SubscriberApp
 ```
 
 Run application Gradle build:
 
 ``` bash
-java -cp build/libs/jros1client.jar id.bootstrap.jrosclient.SubscriberApp
+java -cp build/libs/jros2client.jar id.bootstrap.jrosclient.SubscriberApp
 ```
 
 # Contributors

@@ -10,7 +10,6 @@ import id.jrosmessages.std_msgs.StringMessage;
 public class SubscriberApp {
 
     public static void main(String[] args) throws Exception {
-        // specify URL of the master node
         var client = new JRos2ClientFactory().createClient();
         var topicName = "/helloRos";
         // register a new subscriber
