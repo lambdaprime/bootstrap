@@ -25,7 +25,7 @@ public class RosBridgeApp {
             @Override
             public void onNext(StringMessage item) {
                 System.out.println(item);
-                publisher.submit(new StringMessage().withData("Hello ROS"));
+                publisher.submit(item);
                 System.out.println("Published");
                 getSubscription().get().request(1);
             }
