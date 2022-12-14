@@ -3,6 +3,11 @@ pipeline {
     // should specify tool name as it is assigned in Jenkins tools
     tools {
           maven "Maven 3.8.3"
+          jdk "OpenJDK17U-jdk_x64_linux_hotspot_17.0.2_8"
+    }
+    environment {
+        GRAALVM_HOME = '/opt/graalvm-ce-java17-22.3.0'
+        LD_LIBRARY_PATH = '/opt/graalvm-ce-java17-22.3.0/lib'
     }
     parameters {
         booleanParam(name: 'isReleaseBuild', defaultValue: false, description: 'This build should close current SNAPSHOT version and release stable version')
@@ -10,29 +15,20 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                configFileProvider([configFile(fileId: 'mvn_settings.xml', variable: 'SETTINGS_FILE')]) {
+                configFileProvider([configFile(fileId: 'settings.xml', variable: 'SETTINGS_FILE')]) {
                     withCredentials([usernamePassword(credentialsId: 'tools-tests', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh 'mvn -gs ${SETTINGS_FILE} clean install -Pintegration-test'
                     }
                 }
             }
         }
+        // creates Java runnable and native image
         stage('build-app') {
             steps {
-                configFileProvider([configFile(fileId: 'mvn_settings.xml', variable: 'SETTINGS_FILE')]) {
-                    withCredentials([usernamePassword(credentialsId: 'tools-tests', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh 'mvn -gs ${SETTINGS_FILE} clean install -Papp'
-                    }
-                }
-            }
-        }        
-        stage("deploy") {
-            steps {
-                configFileProvider([configFile(fileId: 'mvn_settings.xml', variable: 'SETTINGS_FILE')]) {
+                configFileProvider([configFile(fileId: 'settings.xml', variable: 'SETTINGS_FILE')]) {
                     sshagent(credentials: ['deploySshKey']) {
                         script {
-                            def args = params.isReleaseBuild? 'release:prepare release:perform -B': 'deploy'
-                            sh 'mvn -gs ${SETTINGS_FILE} ' + args
+                            sh 'mvn -gs ${SETTINGS_FILE} -Pnative clean ' + (params.isReleaseBuild? 'deploy': 'install')
                         }
                     }
                 }

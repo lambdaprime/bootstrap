@@ -1,0 +1,30 @@
+// Jenkins file which describes how to run the Job
+// It first downloads latest version of the application and then
+// runs it with appropriate arguments
+
+pipeline {
+    agent any
+    // should specify tool name as it is assigned in Jenkins tools
+    tools {
+        maven "Maven 3.8.3"
+        jdk "OpenJDK17U-jdk_x64_linux_hotspot_17.0.2_8"
+    }
+    parameters {
+    }
+    stages {
+        stage('Run') {
+            steps {
+                configFileProvider([configFile(fileId: 'settings.xml', variable: 'SETTINGS_FILE')]) {
+                    withCredentials([usernamePassword(credentialsId: 'hello-job', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        script {
+                            sh 'mvn -gs "${SETTINGS_FILE}" org.apache.maven.plugins:maven-dependency-plugin:2.8:get -Dartifact=id.hello:helloapp:1.0-SNAPSHOT -Ddest=helloapp.jar'
+                            def cmd = "java -jar helloapp.jar ${params.ACTION} "
+                            echo "Executing " + cmd
+                            sh cmd
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -2,6 +2,9 @@ Bootstrap project for Java app or library.
 
 It includes:
 
+- tests are moved into separate project which gives two benefits:
+    - supports Java modularity
+    - allows to use SNAPSHOT dependencies in the test project (otherwise you cannot release project which has SNAPSHOT dependencies)
 - publishing to artifactory
 - generation of Javadoc and publishing it to SCM
 - separate Maven profile for running integration tests
@@ -9,29 +12,19 @@ It includes:
 - JUnit, slf4j, jacoco, spotless
 - Jenkins job definition for release
 
-# Build
+# Requirements
 
-Using Maven:
+Java 17+
 
-``` bash
-mvn clean install
-```
+# Download
 
-## Run integration tests
+[Release versions](https://github.com/lambdaprime/bootstrap/releases)
 
-They are disable by default and activated with separate profile:
+# Documentation
 
-``` bash
-mvn clean install -Pintegration-test
-```
+[Documentation](http://portal2.atwebpages.com/)
 
-## Standalone application
-
-To build standalone application which would include all its dependencies:
-
-``` bash
-mvn clean install -Papp
-```
+[Development](DEVELOPMENT.md)
 
 # Contributors
 

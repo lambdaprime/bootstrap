@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>id.hello</groupId>
+    <artifactId>helloapp-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>helloapp</artifactId>
+  <name>Hello Java Application</name>
+  <packaging>${packaging}</packaging>
+
+  <properties>
+    <packaging>jar</packaging>
+    <logback.version>1.4.5</logback.version>
+    <mainClass>id.bootstrap.helloapp.HelloApp</mainClass>
+    <surefire.version>2.19.1</surefire.version>
+    <agentOutput>${project.build.directory}/native/agent-output</agentOutput>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <!--
+          Generate uber jar using shade plugin instead of assembly because
+          assembly plugin takes longer time to finish and slows down the builds
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Main-Class>${mainClass}</Main-Class>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <!--
+                      Exclude files that sign a jar
+                      (one or multiple of the dependencies).
+                      One may not repack a signed jar without
+                      this, or you will get a
+                      SecurityException at program start.
+                  -->
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+
+    <!--
+        Profile to build native image with GraalVM
+    -->
+    <profile>
+      <id>native</id>
+      <build>
+        <plugins>
+
+          <!--
+              Run Graal native agent as part of testing to gather all reflection and
+              other configuration. We want to save it to fixed location which we later
+              can pass to native-image command. Unfortunately native-maven-plugin agent
+              puts it always to random location like native/agent-output/test/session-***
+          -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.version}</version>
+            <configuration>
+              <argLine>-agentlib:native-image-agent=config-output-dir=${agentOutput}</argLine>
+            </configuration>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>0.9.14</version>
+            <extensions>true</extensions>
+            <executions>
+              <execution>
+                <id>build-native</id>
+                <goals>
+                  <goal>compile-no-fork</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <imageName>helloapp</imageName>
+              <mainClass>${mainClass}</mainClass>
+              <fallback>false</fallback>
+              <verbose>true</verbose>
+              <buildArgs>
+                <!-- 
+                     Optimization may remove certain class files, methods, fields. Usually it
+                     removes only unnecessary logic but to avoid any issues we disable it
+                     completely for now
+                -->
+                <buildArg>-H:Optimize=0</buildArg>
+                <!-- 
+                     Building native image is memory consuming and may lead to "Image build
+                     request failed with exit status 137" which is due to OOM. Therefore we
+                     allocate at least 1GB
+                -->
+                <buildArg>-J-Xmx2024m</buildArg>
+                <!--
+                    Compile binary which would not require any dependencies
+                -->
+                <buildArg>--static</buildArg>
+                <buildArg>-H:ConfigurationFileDirectories=${agentOutput}</buildArg>
+              </buildArgs>
+            </configuration>
+          </plugin>
+
+          <!-- Attaching app native image to be part of deployment to artifactory -->          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>attach-artifact</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <zip destfile="${project.build.directory}/helloapp.zip"
+                         basedir="${project.build.directory}"
+                         includes="helloapp"
+                         />
+                    <attachartifact file="${project.build.directory}/helloapp.zip" classifier="linux" type="zip"/>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+    
+</project>
