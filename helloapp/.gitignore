@@ -6,7 +6,7 @@
 **/bld/
 **/.project
 **/.classpath
-/**/release/*-SNAPSHOT.zip
-/**/release/*-SNAPSHOT.jar
-/**/dependency-reduced-pom.xml
+**/release/*-SNAPSHOT.zip
+**/release/*-SNAPSHOT.jar
+**/dependency-reduced-pom.xml
 

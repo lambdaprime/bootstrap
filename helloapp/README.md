@@ -20,6 +20,14 @@ Java 17+
 
 [Release versions](https://github.com/lambdaprime/bootstrap/releases)
 
+# Usage
+
+Includes:
+- full usage details or
+- short but with links to further documentation
+
+README.md is packaged inside the jar file
+
 # Documentation
 
 [Documentation](http://portal2.atwebpages.com/)

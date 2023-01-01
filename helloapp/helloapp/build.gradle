@@ -1,29 +1,30 @@
 // include xfunction for updateVersion
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "io.github.lambdaprime:id.xfunction:14.0"
-    }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "io.github.lambdaprime:id.xfunction:14.0"
+  }
 }
 
 plugins {
-    id 'com.diffplug.spotless'
+  id 'com.diffplug.spotless'
 }
 
 apply plugin : 'eclipse'
 
 eclipse.classpath.file {
-    // instruct eclipse plugin to put everything to module path
-    whenMerged {
-        entries.findAll { it.kind == 'lib' }.each { it.entryAttributes['module'] = 'true' }
-    }
+  // instruct eclipse plugin to put everything to module path
+  whenMerged {
+    entries.findAll { it.kind == 'lib' }.each { it.entryAttributes['module'] = 'true' }
+  }
 }
 
 dependencies {
-    implementation "org.slf4j:slf4j-api:1.7.32"
-    implementation "io.github.lambdaprime:id.xfunction:20.0-SNAPSHOT"
+  implementation "org.slf4j:slf4j-api:1.7.32"
+  implementation "io.github.lambdaprime:id.xfunction:19.0"
+  apiElements "io.github.lambdaprime:id.xfunction:19.0"
 }
 
 configurations {
@@ -31,28 +32,122 @@ configurations {
 }
 
 jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    manifest { 
-        attributes 'Implementation-Version': "${rootProject.version}",
-        'Main-Class': 'id.bootstrap.helloapp.HelloApp'
-    }
-    from {
-        configurations.customConfig.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  manifest { 
+    attributes 'Implementation-Version': "${rootProject.version}",
+      'Main-Class': 'id.bootstrap.helloapp.HelloApp'
+  }
+  from {
+    configurations.customConfig.collect { it.isDirectory() ? it : zipTree(it) }
+  }
 }
 
 task createRelease(type: Copy) {
-    def out = 'release'
-    from jar.archiveFile
-    into out
+  def out = 'release'
+  from jar.archiveFile
+  into out
 }
 
 task cleanRelease(type: Delete) {
-    delete "$projectDir/release"
+  delete "$projectDir/release"
 }
 
 assemble.dependsOn createRelease
 clean.dependsOn cleanRelease
 
+task copyReadme(type: Copy) {
+  from("../README.md")
+  into("$buildDir/resources/main")
+  rename ("README.md", "README-${projectName}.md")
+}
+
+compileJava.dependsOn copyReadme
+
 // run spotless and format code before the build
 classes.dependsOn spotlessApply
+
+if (project.hasProperty('publish')) {
+
+  // update version only during publishing
+  task updateVersion() {
+    if (version.contains("SNAPSHOT")) return;
+    println "Updating version to " + version
+    new id.xfunction.text.Substitutor()
+      .withRegexpSupport()
+      .substitute(java.nio.file.Paths.get("${project.rootDir}/README.md"), Map.of(
+        "id.hello:helloapp:[0-9.]+", "id.hello:helloapp:" + version
+      ));
+  }
+  createRelease.dependsOn updateVersion
+
+  // Initially it was taken from https://central.sonatype.org/publish/publish-gradle/
+  // but since Gradle removed this plugin https://docs.gradle.org/7.0/userguide/upgrading_version_6.html#removal_of_the_legacy_maven_plugin
+  // it was rewritten for new one
+
+  task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from "README-javadoc.txt"
+  }
+
+  task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from "README-sources.txt"
+  }
+
+  java {
+    withJavadocJar()
+    withSourcesJar()
+  }
+
+  apply plugin: 'maven-publish'
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        artifactId = 'helloapp'
+        groupId = 'id.hello'
+        from components.java
+        pom {
+          name = 'helloapp'
+          description = 'Hello Java Application'
+          url = 'https://github.com/lambdaprime/bootstrap'
+
+          licenses {
+            license {
+              name = 'The Apache License, Version 2.0'
+              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+          }
+
+          developers {
+            developer {
+              id = 'lambdaprime'
+              email = 'intid@protonmail.com'
+            }
+          }
+
+          scm {
+            url = 'https://github.com/lambdaprime/bootstrap'
+          }
+        }
+      }
+    }
+    repositories {
+      maven {
+        credentials {
+          username ossrhUsername
+          password ossrhPassword
+        }
+        url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+      }
+    }    
+  }
+
+  if (project.hasProperty('signing.secretKeyRingFile')) {
+    apply plugin: 'signing'
+
+    signing {
+      sign publishing.publications.mavenJava
+    }
+  }
+}
