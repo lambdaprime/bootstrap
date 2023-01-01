@@ -22,9 +22,10 @@ eclipse.classpath.file {
 }
 
 dependencies {
+  addDependencies(this, ["implementation", "apiElements"], "19.0", [
+    "io.github.lambdaprime:id.xfunction"
+  ]);
   implementation "org.slf4j:slf4j-api:1.7.32"
-  implementation "io.github.lambdaprime:id.xfunction:19.0"
-  apiElements "io.github.lambdaprime:id.xfunction:19.0"
 }
 
 configurations {
@@ -61,7 +62,8 @@ task copyReadme(type: Copy) {
   rename ("README.md", "README-${projectName}.md")
 }
 
-compileJava.dependsOn copyReadme
+// overwrite template README which comes from resources folder
+jar.dependsOn copyReadme
 
 // run spotless and format code before the build
 classes.dependsOn spotlessApply
