@@ -1,0 +1,4 @@
+// list of subprojects to publish to Sonatype repo
+
+include 'helloapp'
+project(':helloapp').projectDir = new File(rootDir, '../helloapp')

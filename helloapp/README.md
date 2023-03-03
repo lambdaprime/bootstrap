@@ -20,6 +20,16 @@ Java 17+
 
 [Release versions](https://github.com/lambdaprime/bootstrap/releases)
 
+Or you can add dependency to it as follows:
+
+Gradle:
+
+```
+dependencies {
+    implementation 'io.github.lambdaprime:helloapp:1.0'
+}
+```
+
 # Usage
 
 Includes:
