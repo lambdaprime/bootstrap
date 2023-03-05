@@ -10,6 +10,7 @@ buildscript {
 
 plugins {
   id 'com.diffplug.spotless'
+  id 'java-library'
 }
 
 apply plugin : 'eclipse'
@@ -22,9 +23,7 @@ eclipse.classpath.file {
 }
 
 dependencies {
-  addDependencies(this, ["implementation", "apiElements"], "20.0", [
-    "io.github.lambdaprime:id.xfunction"
-  ]);
+  api "io.github.lambdaprime:id.xfunction:20.0"
   implementation "org.slf4j:slf4j-api:1.7.32"
 }
 
