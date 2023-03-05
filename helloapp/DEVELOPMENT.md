@@ -46,5 +46,5 @@ mvn clean install -Papp
 - Open next SNAPSHOT version
 - Commit changes
 - Push
-- Create new release in GitHub (for changelog use `git log --format=%s`)
+- Update CHANGELOG.md with new release (for changelog generation use `git log --format=%s`)
 - Upload documentation to website

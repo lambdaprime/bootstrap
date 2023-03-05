@@ -18,7 +18,7 @@ Java 17+
 
 # Download
 
-[Release versions](https://github.com/lambdaprime/bootstrap/releases)
+[Release versions](https://github.com/lambdaprime/bootstrap/tree/main/helloapp/helloapp/release/CHANGELOG.md)
 
 Or you can add dependency to it as follows:
 
@@ -26,7 +26,7 @@ Gradle:
 
 ```
 dependencies {
-    implementation 'io.github.lambdaprime:helloapp:1.0'
+  implementation 'io.github.lambdaprime:helloapp:2.0'
 }
 ```
 
