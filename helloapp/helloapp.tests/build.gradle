@@ -13,6 +13,8 @@ eclipse.classpath.file {
 dependencies {
   testImplementation(project ":helloapp")
 
+  testImplementation "org.mockito:mockito-core:5.2.0"
+
   def junitVersion = "5.8.1"
   testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
   testImplementation "org.junit.jupiter:junit-jupiter-params:${junitVersion}"

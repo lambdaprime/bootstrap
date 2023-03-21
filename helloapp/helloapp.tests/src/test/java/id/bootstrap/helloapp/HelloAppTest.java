@@ -17,8 +17,16 @@
  */
 package id.bootstrap.helloapp;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import id.xfunction.cli.CommandLineInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 public class HelloAppTest {
 
@@ -26,5 +34,16 @@ public class HelloAppTest {
     public void test() {
         HelloApp.main(null);
         Assertions.assertTrue(true);
+
+        var cli = mock(CommandLineInterface.class);
+        when(cli.askConfirm(any())).thenReturn(true);
+        var capture = ArgumentCaptor.forClass(String.class);
+
+        var confirmed = cli.askConfirm("1");
+        cli.print("Hello");
+
+        verify(cli, atLeastOnce()).print(capture.capture());
+        Assertions.assertEquals("Hello", capture.getValue().toString());
+        Assertions.assertEquals(true, confirmed);
     }
 }
