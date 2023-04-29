@@ -18,7 +18,7 @@ Java 17+
 
 # Download
 
-[Release versions](https://github.com/lambdaprime/bootstrap/tree/main/helloapp/helloapp/release/CHANGELOG.md)
+[Release versions](helloapp/release/CHANGELOG.md)
 
 Or you can add dependency to it as follows:
 

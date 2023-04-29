@@ -72,10 +72,6 @@ props.each { prop ->
 }
 ins.close()
 
-void addDependencies(project, configurations, version,  packages) {
-  // providing stub method from main build.gradle
-}
-
 ext {
   releaseFileName = "${projectName}-v${version}.zip"
 }

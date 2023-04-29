@@ -73,13 +73,15 @@ task copyReadme(type: Copy) {
 
 // overwrite template README which comes from resources folder
 jar.dependsOn copyReadme
+javadoc.dependsOn copyReadme
 
 // run spotless and format code before the build
 classes.dependsOn spotlessApply
 
 task updateVersion() {
   // update version only when it is specified and non SNAPSHOT version is built
-  if (version || version.contains("SNAPSHOT")) return;
+  // 'unspecified' is the default value for the version in Gradle if it is not set
+  if (!version || version == "unspecified" || version.contains("SNAPSHOT")) return;
   println "Updating version to " + version
   new id.xfunction.text.Substitutor()
     .withRegexpSupport()
