@@ -9,7 +9,7 @@
 
   <properties>
     <jdk.version>17</jdk.version>
-    <rtpstalk.version>1.0</rtpstalk.version>
+    <rtpstalk.version>4.0</rtpstalk.version>
   </properties>
 
   <dependencies>
