@@ -6,8 +6,8 @@
     <artifactId>hello-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>hello.app</artifactId>
-  <name>Hello Java Application</name>
+  <artifactId>hello</artifactId>
+  <name>Hello Java Library</name>
   <packaging>${packaging}</packaging>
 
   <properties>
@@ -19,11 +19,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>id.hello</groupId>
-      <artifactId>hello</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>

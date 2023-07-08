@@ -15,17 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package id.bootstrap.helloapp;
+package id.bootstrap.hello;
 
-import id.bootstrap.hello.HelloApp;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import id.bootstrap.helloapp.HelloService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class HelloAppIT {
+public class HelloApp {
 
-    @Test
-    public void test() {
-        HelloApp.main(null);
-        Assertions.assertTrue(true);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloApp.class);
+
+    public static void main(String[] args) {
+        LOGGER.info("Hello");
+        new HelloService().sayHi();
     }
 }

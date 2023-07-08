@@ -20,11 +20,11 @@ package id.bootstrap.helloapp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HelloApp {
+public class HelloService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloApp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloService.class);
 
-    public static void main(String[] args) {
+    public void sayHi() {
         LOGGER.info("Hello");
     }
 }

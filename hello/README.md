@@ -1,4 +1,4 @@
-Bootstrap project for Java app or library.
+Bootstrap project for Java app and library.
 
 It includes:
 
@@ -18,7 +18,8 @@ Java 17+
 
 # Download
 
-[Release versions](helloapp/release/CHANGELOG.md)
+[Release versions](hello/release/CHANGELOG.md)
+[Release versions](hello.app/release/CHANGELOG.md)
 
 Or you can add dependency to it as follows:
 
@@ -26,7 +27,7 @@ Gradle:
 
 ```
 dependencies {
-  implementation 'io.github.lambdaprime:helloapp:2.0'
+  implementation 'io.github.lambdaprime:hello:2.0'
 }
 ```
 

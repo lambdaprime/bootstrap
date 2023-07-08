@@ -23,6 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import id.bootstrap.hello.HelloApp;
 import id.xfunction.cli.CommandLineInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

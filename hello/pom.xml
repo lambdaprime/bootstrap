@@ -172,6 +172,7 @@
   </build>
 
   <modules>
+    <module>hello</module>
     <module>hello.app</module>
     <module>hello.tests</module>
   </modules> 

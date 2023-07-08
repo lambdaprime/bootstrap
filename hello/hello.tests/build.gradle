@@ -11,6 +11,7 @@ eclipse.classpath.file {
 }
 
 dependencies {
+  testImplementation(project ":hello")
   testImplementation(project ":hello.app")
 
   testImplementation "org.mockito:mockito-core:5.2.0"
