@@ -11,7 +11,7 @@ eclipse.classpath.file {
 }
 
 dependencies {
-  testImplementation(project ":helloapp")
+  testImplementation(project ":hello.app")
 
   testImplementation "org.mockito:mockito-core:5.2.0"
 
@@ -43,13 +43,13 @@ jacocoTestReport {
     csv.required = false
     html.required = true
   }
-  sourceDirectories.from = project(':helloapp').sourceSets.main.java.srcDirs
-  classDirectories.from = project(':helloapp').sourceSets.main.java.classesDirectory
+  sourceDirectories.from = project(':hello.app').sourceSets.main.java.srcDirs
+  classDirectories.from = project(':hello.app').sourceSets.main.java.classesDirectory
 }
 
 jacocoTestCoverageVerification {
-  sourceDirectories.from = project(':helloapp').sourceSets.main.java.srcDirs
-  classDirectories.from = project(':helloapp').sourceSets.main.java.classesDirectory
+  sourceDirectories.from = project(':hello.app').sourceSets.main.java.srcDirs
+  classDirectories.from = project(':hello.app').sourceSets.main.java.classesDirectory
   afterEvaluate {
     classDirectories.setFrom(files(classDirectories.files.collect {
       fileTree(dir: it, exclude:  [

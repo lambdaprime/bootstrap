@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>id.hello</groupId>
-    <artifactId>helloapp-parent</artifactId>
+    <artifactId>hello-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>helloapp</artifactId>
+  <artifactId>hello.app</artifactId>
   <name>Hello Java Application</name>
   <packaging>${packaging}</packaging>
 
@@ -28,6 +28,11 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.lambdaprime</groupId>
+      <artifactId>id.xfunction</artifactId>
+      <version>20.0</version>
     </dependency>
   </dependencies>
 

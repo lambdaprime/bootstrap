@@ -1,0 +1,2 @@
+include 'hello.app'
+include 'hello.tests'
