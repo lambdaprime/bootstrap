@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbinstance-service
+  labels:
+    name: dbinstance
+spec:
+  selector:
+    app: dbinstance-service
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+    nodePort: 30306
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbinstance
+  labels:
+    app: dbinstance-service
+spec:
+  selector:
+    matchLabels:
+      app: dbinstance-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dbinstance-service
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: dbinstance
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dbinstance
+              key: root
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: dbinstance-volume-1
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: dbinstance-volume-1
+

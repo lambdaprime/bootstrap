@@ -1,0 +1,11 @@
+# This PVC is to be created only once   
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dbinstance-volume-1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
