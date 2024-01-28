@@ -1,3 +1,6 @@
+# Base on https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
+#
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -48,4 +51,5 @@ spec:
           mountPath: /var/lib/mysql
       volumes:
       - name: dbinstance-volume-1
-
+        persistentVolumeClaim:
+          claimName: dbinstance-volume-1
