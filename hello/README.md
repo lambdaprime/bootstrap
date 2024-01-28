@@ -45,6 +45,6 @@ README.md is packaged inside the jar file
 
 [Development](DEVELOPMENT.md)
 
-# Contributors
+# Contacts
 
 lambdaprime <intid@protonmail.com>

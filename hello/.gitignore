@@ -4,9 +4,11 @@
 **/.gradle/
 **/.settings/
 **/bld/
+**/Debug/
 **/.project
 **/.classpath
-**/release/*-SNAPSHOT.zip
-**/release/*-SNAPSHOT.jar
+**/.cproject
+/**/release/*-SNAPSHOT.*
 **/dependency-reduced-pom.xml
+**/hs_err*
 

@@ -4,7 +4,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath "io.github.lambdaprime:id.xfunction:14.0"
+    classpath "io.github.lambdaprime:id.xfunction:23.0"
   }
 }
 
@@ -46,6 +46,19 @@ javadoc {
   options.noNavBar = true
   // ignore missing @return, @param etc
   options.addBooleanOption('Xdoclint:all,-missing', true)
+  options.addStringOption('-show-packages', 'exported')
+  // Gradle does not support exclude correctly:
+  // https://github.com/gradle/gradle/issues/19726
+  def sourceSetDirectories = sourceSets
+    .main
+    .java
+    .sourceDirectories
+    .getFiles()
+    .stream()
+    .map({f -> f.toString() })
+    .collect(java.util.stream.Collectors.joining(":"))
+  options.addStringOption("-source-path", sourceSetDirectories)
+  exclude 'id/hello/impl/**'
 }
 
 task createRelease(type: Copy) {
