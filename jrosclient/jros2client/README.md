@@ -34,6 +34,6 @@ Run application Gradle build:
 java -cp build/libs/jros2client.jar id.bootstrap.jrosclient.SubscriberApp
 ```
 
-# Contributors
+# Contacts
 
 lambdaprime <intid@protonmail.com>

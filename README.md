@@ -1,5 +1,5 @@
 Bootstrap projects.
 
-# Contributors
+# Contacts
 
 lambdaprime <intid@protonmail.com>

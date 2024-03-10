@@ -1,0 +1,14 @@
+**/bin/
+**/build/
+**/target/
+**/.gradle/
+**/.settings/
+**/bld/
+**/Debug/
+**/.project
+**/.classpath
+**/.cproject
+/**/release/*-SNAPSHOT.*
+**/dependency-reduced-pom.xml
+**/hs_err*
+
