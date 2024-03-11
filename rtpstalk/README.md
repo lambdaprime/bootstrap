@@ -2,13 +2,7 @@ Bootstrap project for [rtpstalk](https://github.com/pinorobotics/rtpstalk)
 
 # Build
 
-Using Maven 3.5.4+:
-
-``` bash
-mvn clean install
-```
-
-Using Gradle 7.5+:
+Using Gradle:
 
 ``` bash
 gradle clean build
@@ -28,6 +22,6 @@ Run Publisher:
 java -cp rtpstalkexample.jar id.bootstrap.rtpstalk.PublisherApp
 ```
 
-# Contributors
+# Contacts
 
 lambdaprime <intid@protonmail.com>
